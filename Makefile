@@ -44,5 +44,8 @@ publish:
 	GOPROXY=proxy.golang.org go list -m $(PROJECT)
 
 purge:
+	@printf "\033[37;1m»\033[0m Purging everything (except Makefile)...\n"
 	@find * ! -name 'Makefile' -type d -exec rm -rf {} +
-	@find * ! -name 'Makefile' -type f -exec rm -f {} +
+	@find . ! -name 'Makefile' -type f -exec rm -f {} +
+	@rm -rf .git/
+	@printf "\033[32;1m»\033[0m Purged\n"
