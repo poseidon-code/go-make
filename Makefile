@@ -1,5 +1,5 @@
-NAME=go-template
-PROJECT=github.com/poseidon-code/$(NAME)
+NAME=go-make
+PROJECT=github.com/username/$(NAME)
 GOOS=linux
 GOARCH=amd64
 
