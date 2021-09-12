@@ -1,8 +1,6 @@
 NAME=go-make
 PROJECT=github.com/username/$(NAME)
-MAIN=main.go
-GOOS=linux
-GOARCH=amd64
+MAIN=main.golang
 
 
 init:
