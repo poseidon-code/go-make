@@ -1,12 +1,14 @@
 NAME=go-make
 PROJECT=github.com/username/$(NAME)
+MAIN=main.go
 GOOS=linux
 GOARCH=amd64
+
 
 init:
 	@printf "\033[36;1m§\033[0m Implementing \033[36;1mGolang\033[0m template for '\033[36;1m$(NAME)\033[0m' as '\033[36;1m$(PROJECT)\033[0m'.\n"
 	@printf "\033[37;1m»\033[0m Generating simple project structure...\n"
-	@mkdir bin package
+	@mkdir bin dist package
 	@printf "package main\n\nfunc main() {\n\n}\n" >> main.go
 	@printf "\033[32;1m»\033[0m Generated all files\n"
 
@@ -19,8 +21,13 @@ init:
 	@git checkout -b main
 	@printf "\033[32;1m»\033[0m Initialized (*main)\n"
 
+
 run:
-	go run main.go
+	@printf "\033[37;1m»\033[0m Running program '$(MAIN)'...\n"
+	@go run $(MAIN)
+	@printf "\033[32;1m»\033[0m Program '$(MAIN)' exited\n"
+
+
 
 build:
 	@printf "\033[37;1m»\033[0m Building '$(PROJECT)'...\n"
@@ -29,7 +36,8 @@ build:
 
 	@printf "\033[37;1m»\033[0m Running program '$(NAME)'...\n"
 	@./bin/$(NAME)
-	@printf "\033[32;1m»\033[0m Program '$(NAME)' ended\n"
+	@printf "\033[32;1m»\033[0m Program '$(NAME)' exited\n"
+
 
 
 start:
@@ -37,19 +45,30 @@ start:
 	@./bin/$(NAME)
 	@printf "\033[32;1m»\033[0m Program '$(NAME)' exited\n"
 
+
 compile:
-	GOOS=$(GOOS) GOARCH=$(GOARCH) go build -o bin/$(NAME)-$(GOOS)-$(GOARCH) main.go
+	@printf "\033[37;1m»\033[0m Compiling for linux, windows, macos with x64 & x86 architecture...\n"
+	GOOS=linux GOARCH=amd64 go build -o dist/$(NAME)-linux-amd64 $(MAIN)
+	GOOS=linux GOARCH=386 go build -o dist/$(NAME)-linux-386 $(MAIN)
+	GOOS=windows GOARCH=amd64 go build -o dist/$(NAME)-windows-amd64 $(MAIN)
+	GOOS=windows GOARCH=386 go build -o dist/$(NAME)-windows-386 $(MAIN)
+	GOOS=darwin GOARCH=amd64 go build -o dist/$(NAME)-darwin-amd64 $(MAIN)
+	@printf "\033[32;1m»\033[0m Compiled to 'dist/'\n"
+
 
 clean:
 	@printf "\033[37;1m»\033[0m Cleaning Golang cached packages...\n"
-	@printf "\033[32;1m»\033[0m Cleaned\n"
 	@go clean -modcache
+	@printf "\033[32;1m»\033[0m Cleaned\n"
+
 
 tidy:
 	go mod tidy
 
+
 publish:
 	GOPROXY=proxy.golang.org go list -m $(PROJECT)
+
 
 purge:
 	@printf "\033[37;1m»\033[0m Purging everything (except Makefile)...\n"
