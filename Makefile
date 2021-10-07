@@ -31,12 +31,8 @@ run:
 build:
 	@printf "\033[37;1m»\033[0m Building '$(PROJECT)'...\n"
 	go build -o bin/ $(PROJECT)
+	@printf "\033[37;1m»\033[0m Run built program : make start\n"
 	@printf "\033[32;1m»\033[0m Built at 'bin/$(NAME)'\n\n"
-
-	@printf "\033[37;1m»\033[0m Running program '$(NAME)'...\n"
-	@./bin/$(NAME)
-	@printf "\033[32;1m»\033[0m Program '$(NAME)' exited\n"
-
 
 
 start:
