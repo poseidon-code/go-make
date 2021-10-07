@@ -1,6 +1,7 @@
 NAME=go-make
-PROJECT=github.com/username/$(NAME)
-MAIN=main.golang
+GITHUB_USERNAME=poseidon-code
+PROJECT=github.com/$(GITHUB_USERNAME)/$(NAME)
+MAIN=main.go
 
 
 init:
@@ -47,9 +48,9 @@ start:
 compile:
 	@printf "\033[37;1m»\033[0m Compiling for linux, windows, macos with x64 & x86 architecture...\n"
 	GOOS=linux GOARCH=amd64 go build -o dist/$(NAME)-linux-amd64 $(MAIN)
-	GOOS=linux GOARCH=386 go build -o dist/$(NAME)-linux-386 $(MAIN)
-	GOOS=windows GOARCH=amd64 go build -o dist/$(NAME)-windows-amd64 $(MAIN)
-	GOOS=windows GOARCH=386 go build -o dist/$(NAME)-windows-386 $(MAIN)
+	GOOS=linux GOARCH=386 GO386=softfloat go build -o dist/$(NAME)-linux-386 $(MAIN)
+	GOOS=windows GOARCH=amd64 go build -o dist/$(NAME)-windows-amd64.exe $(MAIN)
+	GOOS=windows GOARCH=386 GO386=softfloat go build -o dist/$(NAME)-windows-386.exe $(MAIN)
 	GOOS=darwin GOARCH=amd64 go build -o dist/$(NAME)-darwin-amd64 $(MAIN)
 	@printf "\033[32;1m»\033[0m Compiled to 'dist/'\n"
 
@@ -61,7 +62,9 @@ clean:
 
 
 tidy:
-	go mod tidy
+	@printf "\033[37;1m»\033[0m Tidying Up dependencies...\n"
+	@go mod tidy
+	@printf "\033[32;1m»\033[0m Finished\n"
 
 
 publish:
@@ -70,7 +73,5 @@ publish:
 
 purge:
 	@printf "\033[37;1m»\033[0m Purging everything (except Makefile)...\n"
-	@find * ! -name 'Makefile' -type d -exec rm -rf {} +
-	@find . ! -name 'Makefile' -type f -exec rm -f {} +
-	@rm -rf .git/
+	@rm -rf .git/ bin/ dist/ package/
 	@printf "\033[32;1m»\033[0m Purged\n"
