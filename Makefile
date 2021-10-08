@@ -69,5 +69,6 @@ publish:
 
 purge:
 	@printf "\033[37;1m»\033[0m Purging everything (except Makefile)...\n"
-	@rm -rf .git/ bin/ dist/ package/
+	@find * ! -name 'Makefile' -type d -exec rm -rfv {} +
+	@rm -rfv .git/
 	@printf "\033[32;1m»\033[0m Purged\n"
